@@ -1,6 +1,11 @@
 use std::collections::BTreeSet;
 
-use crate::objects::Solid;
+use fj_math::Point;
+
+use crate::{
+    local::Local,
+    objects::{Edge, GlobalVertex, Solid, Vertex, VerticesOfEdge},
+};
 
 use super::intersection::{self, CurveFaceIntersectionList};
 
@@ -11,6 +16,7 @@ pub fn union(a: Solid, b: Solid) -> Solid {
 
     let mut faces = BTreeSet::new();
 
+    // Check the faces of both shapes for intersections.
     for face_a in a.faces() {
         for face_b in b.faces() {
             let intersection = intersection::surface_surface(
@@ -46,6 +52,28 @@ pub fn union(a: Solid, b: Solid) -> Solid {
                     // TASK: Implement.
                     todo!()
                 }
+            }
+
+            let intersections = intersections_a.merge(&intersections_b);
+
+            for interval in intersections {
+                let [start, end] = interval.map(|coord| Point::from([coord]));
+                let [start_global, end_global] = [start, end].map(|point| {
+                    let position = curve.point_from_curve_coords(point);
+                    GlobalVertex::from_position(position)
+                });
+
+                let vertices = VerticesOfEdge::from_vertices([
+                    Vertex::new(start, start_global),
+                    Vertex::new(end, end_global),
+                ]);
+
+                let edge_a = Edge::new(Local::new(curve_a, curve), vertices);
+                let edge_b = Edge::new(Local::new(curve_b, curve), vertices);
+
+                // TASK: Implement.
+                let _ = edge_a;
+                let _ = edge_b;
             }
 
             // TASK: Implement.
