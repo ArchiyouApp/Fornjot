@@ -98,5 +98,15 @@ mod tests {
     }
 
     // TASK: intersecting, broken edges in a
-    // TASK: intersection, broken edges in b
+
+    // #[test]
+    // fn intersecting_with_broken_edges_in_b() {
+    //     let a = Solid::cube_from_edge_length(2.);
+    //     let b = Solid::cube_from_edge_length(1.).translate([0., 0., 1.]);
+
+    //     let union = union(a, b);
+
+    //     let expected = todo!();
+    //     assert_eq!(union, expected);
+    // }
 }
